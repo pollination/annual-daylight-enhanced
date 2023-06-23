@@ -1,4 +1,4 @@
-# annual-daylight
+# annual-daylight-enhanced
 Annual daylight recipe for Pollination
 
 Use this recipe to calculate annual daylight for a HBJSON model.

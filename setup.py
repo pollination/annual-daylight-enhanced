@@ -14,7 +14,7 @@ with open('extras-requirements.txt') as f:
 
 # normal setuptool inputs
 setuptools.setup(
-    name='pollination-annual-daylight',                                     # will be used for package name unless it is overwritten using __queenbee__ info.
+    name='pollination-annual-daylight-enhanced',                                     # will be used for package name unless it is overwritten using __queenbee__ info.
     author='ladybug-tools',                                                 # the owner account for this package - required if pushed to Pollination
     author_email='info@ladybug.tools',
     packages=setuptools.find_namespace_packages(                            # required - that's how pollination find the package
@@ -24,7 +24,7 @@ setuptools.setup(
     extras_require={'viz': extras_requirements},
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
-    url='https://github.com/pollination/annual-daylight',                   # will be translated to home
+    url='https://github.com/pollination/annual-daylight-enhanced',                   # will be translated to home
     project_urls={
         'icon': 'https://raw.githubusercontent.com/ladybug-tools/artwork/master/icons_components/honeybee/png/annualrecipe.png',
         'docker': 'https://hub.docker.com/r/ladybugtools/honeybee-radiance'
