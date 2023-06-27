@@ -1,4 +1,4 @@
-from pollination.annual_daylight.entry import AnnualDaylightEntryPoint
+from pollination.annual_daylight_enhanced.entry import AnnualDaylightEntryPoint
 from queenbee.recipe.dag import DAG
 
 
