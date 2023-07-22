@@ -12,9 +12,12 @@ from pollination.alias.inputs.radiancepar import rad_par_annual_input, \
 from pollination.alias.inputs.grid import grid_filter_input, \
     min_sensor_count_input, cpu_count
 from pollination.alias.inputs.schedule import schedule_csv_input
+from pollination.alias.inputs.postprocess import grid_metrics_input
 from pollination.alias.outputs.daylight import daylight_autonomy_results, \
     continuous_daylight_autonomy_results, \
-    udi_results, udi_lower_results, udi_upper_results
+    udi_results, udi_lower_results, udi_upper_results, grid_metrics_results
+
+from ._post_process import AnnualDaylightPostProcess
 
 
 @dataclass
@@ -94,6 +97,11 @@ class AnnualDaylightEntryPoint(DAG):
         alias=daylight_thresholds_input
     )
 
+    grid_metrics = Inputs.file(
+        description='A JSON file with additional custom metrics to calculate.',
+        extensions=['json'], optional=True, alias=grid_metrics_input
+    )
+
     @task(
         template=TwoPhaseDaylightCoefficientEntryPoint
     )
@@ -105,22 +113,31 @@ class AnnualDaylightEntryPoint(DAG):
         pass
 
     @task(
-        template=AnnualDaylightMetrics,
+        template=AnnualDaylightPostProcess,
         needs=[run_two_phase_daylight_coefficient]
     )
-    def calculate_annual_metrics(
-        self, folder='results',
-        schedule=schedule, thresholds=thresholds
+    def annual_metrics_postprocess(
+        self, model=model, results='results', grids_info='results/grids_info.json',
+        schedule=schedule, thresholds=thresholds, grid_metrics=grid_metrics
     ):
         return [
             {
-                'from': AnnualDaylightMetrics()._outputs.annual_metrics,
+                'from': AnnualDaylightPostProcess()._outputs.metrics,
                 'to': 'metrics'
+            },
+            {
+                'from': AnnualDaylightPostProcess()._outputs.grid_summary,
+                'to': 'grid_summary.csv'
             }
         ]
 
     metrics = Outputs.folder(
         source='metrics', description='Annual metrics folder.'
+    )
+
+    grid_summary = Outputs.file(
+        source='grid_summary.csv', description='Grid summary of metrics.',
+        alias=grid_metrics_results
     )
 
     da = Outputs.folder(
