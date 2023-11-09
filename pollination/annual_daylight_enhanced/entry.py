@@ -150,6 +150,11 @@ class AnnualDaylightEntryPoint(DAG):
         source='metrics', description='Annual metrics folder.'
     )
 
+    results = Outputs.folder(
+        source='results', description='Folder with raw result files (.ill) that '
+        'contain illuminance matrices for each sensor at each timestep of the analysis.'
+    )
+
     grid_summary = Outputs.file(
         source='grid_summary.csv', description='Grid summary of metrics.',
         alias=grid_metrics_results
