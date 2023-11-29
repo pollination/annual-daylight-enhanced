@@ -1,7 +1,6 @@
 from pollination_dsl.dag import Inputs, DAG, task, Outputs
 from dataclasses import dataclass
 from pollination.two_phase_daylight_coefficient import TwoPhaseDaylightCoefficientEntryPoint
-from pollination.honeybee_radiance_postprocess.post_process import AnnualDaylightMetrics
 
 # input/output alias
 from pollination.alias.inputs.model import hbjson_model_grid_input
@@ -76,7 +75,7 @@ class AnnualDaylightEntryPoint(DAG):
 
     wea = Inputs.file(
         description='Wea file.',
-        extensions=['wea'],
+        extensions=['wea', 'epw'],
         alias=wea_input_timestep_check
     )
 
