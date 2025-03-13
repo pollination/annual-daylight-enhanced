@@ -48,9 +48,11 @@ jobs:
       - name: set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.12'
       - name: install python dependencies
-        run: pip install .
+        run: |
+          pip install -r dev-requirements.txt
+          pip install .
       - name: deploy to staging
         run: |
           queenbee
@@ -130,7 +132,7 @@ jobs:
       - name: set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.12'
       - name: Get Job Context
         id: get-context
         run: |
@@ -139,8 +141,8 @@ jobs:
           echo "::set-output name=tag::$TAG"
       - name: install python dependencies
         run: |
+          pip install -r dev-requirements.txt
           pip install pollination-annual-daylight-enhanced
-          pip install -r requirements.txt
       - name: deploy to production
         run: |
           TAG=$(echo "${TAG:?}" | sed 's/[[:space:]]//g')
